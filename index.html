@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>jsModal - Modal generator in pure JavaScript.</title>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+<style>
+html {
+	font-family: arial, sans-serif;
+	color: #444;
+}
+body {
+	background: #eee;
+}
+#header {
+	background: #fafafa;
+	border-bottom: 1px solid #f2f2f2;
+	overflow: hidden;
+	text-align: center;
+}
+#wrapper {
+	background: #fff;
+	-moz-border-radius: 11px;
+	-webkit-border-radius: 11px;
+	border-radius: 11px;
+	margin: 0 auto;
+	width: 600px;
+}
+#wrapper > div {
+	display: block;
+	margin: 10px;
+}
+#footer {
+	background: #f9f9f9;
+	border-top: 1px solid #f5f5f5;
+	text-align: center;
+}
+h1, h4 {
+	font-family: "open sans", arial, sans-serif;
+}
+a {
+	color: #36c;
+}
+</style>
+<link href="js/google-code-prettify/prettify.css" rel="stylesheet" type="text/css" />
+<link href="css/jsmodal-light.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body onload="prettyPrint()">
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40156898-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<div id="wrapper">
+	<div id="header">
+		<h1>jsModal!</h1>
+		<p>A modal box engine written in pure JavaScript</p>
+	</div>
+	<div id="content">
+		<h4>What is jsModal?</h4>
+		<p>jsModal is a fast, small, and feature-sufficient JavaScript modal box 
+		engine. It makes things like generating modals much simpler with an easy-to-use 
+		call that works across a multitude of browsers. With a combination of limitations 
+		and constraints, jsModal will change the way that a super-minute fraction 
+		of people write JavaScript.</p>
+		<h4>Who's using jsModal</h4>
+		<p>Well, nobody as far as we know. Everyone seems to be using that jQeer-thingy 
+		library. Which is all good, because jsModal works seemlessly with it, and 
+		several other available libraries such as (Cow sound)-Tools and (Homer exclamation)-Joe.</p>
+		<h4>A Brief Look</h4>
+		<p><strong>Launching a modal</strong><br />
+		</p>
+		<pre class="prettyprint lang-html linenums">
+&lt;script&gt;
+document.getElementById('modal-1').onclick = function() {
+  Modal.open({ content: '&lt;h1&gt;Default modal!&lt;/h1&gt;' });
+}
+&lt;/script&gt;
+</pre>
+		<input id="modal-1" type="button" value="Example 1" />
+		<p><strong>Using all parameters</strong><br />
+		</p>
+		<pre class="prettyprint lang-html linenums">
+&lt;script&gt;
+document.getElementById('modal-2').onclick = function() {
+  Modal.open({
+    content: '&lt;h1&gt;Hello!&lt;/h1&gt;&lt;p&gt;(click the overlay to escape)&lt;/p&gt;',
+    width: '50%',
+    height: '50%',
+    hideclose: true
+  });
+}
+&lt;/script&gt;
+</pre>
+		<input id="modal-2" type="button" value="Example 2" />
+		<br /><br />
+		<a href="http://code.google.com/p/jsmodal/">Google Code Repository: http://code.google.com/p/jsmodal/</a>
+</div>
+	<div id="footer">
+		© 2013 Henry Tang Kai</div>
+</div>
+<script src="js/google-code-prettify/run_prettify.js"></script>
+<script src="js/jsmodal.min.js"></script>
+<script>
+document.getElementById('modal-1').onclick = function() {
+  Modal.open({ content: '<strong>Default modal!</strong><br />Testing the modal.<br /><br />Loreum ipsum dolorem the quick brown fox jumped over the lazy dog.<br /><br />Yes its true.', draggable: true });
+}
+document.getElementById('modal-2').onclick = function() {
+  Modal.open({
+    content: '<h1>Hello!</h1><p>(click the overlay to escape)</p>',
+    draggable: true,
+    width: '50%',
+    height: '50%',
+    hideclose: true
+  });
+}
+</script>
+
+</body>
+
+</html>
