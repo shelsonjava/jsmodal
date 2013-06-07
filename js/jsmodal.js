@@ -1,5 +1,5 @@
 /*!
- * jsModal - A pure JavaScript modal dialog engine v1.0
+ * jsModal - A pure JavaScript modal dialog engine v1.0a
  * http://jsmodal.com/
  *
  * Author: Henry Rune Tang Kai <henry@henrys.se>
@@ -18,6 +18,7 @@ var Modal = (function() {
 
          // create object method
         var method = {},
+            settings = {},
 
             modalOverlay = document.createElement('div'),
             modalContainer = document.createElement('div'),
@@ -25,7 +26,7 @@ var Modal = (function() {
             modalContent = document.createElement('div'),
             modalClose = document.createElement('div'),
 
-            parameters = {
+            defaultSettings = {
                 width: 'auto',
                 height: 'auto',
                 lock: false,
@@ -34,21 +35,21 @@ var Modal = (function() {
             };
 
         // Open the modal
-        method.open = function(settings) {
-            parameters.width = settings.width || parameters.width;
-            parameters.height = settings.height || parameters.height;
-            parameters.lock = settings.lock || parameters.lock;
-            parameters.hideclose = settings.hideclose || parameters.hideclose;
-            parameters.draggable = settings.draggable || parameters.draggable;
+        method.open = function(parameters) {
+            settings.width = parameters.width || defaultSettings.width;
+            settings.height = parameters.height || defaultSettings.height;
+            settings.lock = parameters.lock || defaultSettings.lock;
+            settings.hideclose = parameters.hideclose || defaultSettings.hideclose;
+            settings.draggable = parameters.draggable || defaultSettings.draggable;
 
-            modalContent.innerHTML = settings.content;
+            modalContent.innerHTML = parameters.content;
 
-            modalContainer.style.width = parameters.width;
-            modalContainer.style.height = parameters.height;
+            modalContainer.style.width = settings.width;
+            modalContainer.style.height = settings.height;
 
             method.center({});
 
-            if (parameters.lock || parameters.hideclose) {
+            if (settings.lock || settings.hideclose) {
                 modalClose.style.visibility = 'hidden';
             }
 
@@ -56,20 +57,20 @@ var Modal = (function() {
             modalContainer.style.visibility = 'visible';
 
             document.onkeypress = function(e) {
-                if (e.keyCode === 27 && parameters.lock !== true) {
+                if (e.keyCode === 27 && settings.lock !== true) {
                     method.close();
                 }
             };
 
             modalClose.onclick = function() {
-                if (!parameters.hideclose) {
+                if (!settings.hideclose) {
                     method.close();
                 } else {
                     return false;
                 }
             };
             modalOverlay.onclick = function() {
-                if (!parameters.lock) {
+                if (!settings.lock) {
                     method.close();
                 } else {
                     return false;
@@ -80,11 +81,16 @@ var Modal = (function() {
                 method.center({ horizontalOnly: true });
             };
 
-            if (parameters.draggable === true) {
+            if (settings.draggable === true) {
+                modalHeader.style.cursor = 'move';
                 modalHeader.onmousedown = function(e) {
                     method.drag(e);
                     return false;
                 };
+            } else {
+                modalHeader.onmousedown = function() {
+                    return false;
+                }
             }
         };
 
@@ -98,10 +104,10 @@ var Modal = (function() {
                 xPosition = (window.event !== undefined) ? window.event.clientX : e.clientX;
                 yPosition = (window.event !== undefined) ? window.event.clientY : e.clientY;
 
-                modalContainer.style.left = xPosition - differenceX + 'px';
-                modalContainer.style.top = yPosition - differenceY + 'px';
+                modalContainer.style.left = ((xPosition - differenceX) > 0) ? (xPosition - differenceX) + 'px' : 0 + 'px';
+                modalContainer.style.top = ((yPosition - differenceY) > 0) ? (yPosition - differenceY) + 'px' : 0 + 'px';
 
-                this.onmouseup = function() {
+                document.onmouseup = function() {
                     window.document.onmousemove = null;
                 };
             };
@@ -116,17 +122,13 @@ var Modal = (function() {
             modalContainer.setAttribute('style', '');
             modalContainer.style.cssText = '';
             modalContainer.style.visibility = 'hidden';
+            modalHeader.style.cursor = 'default';
             modalClose.setAttribute('style', '');
             modalClose.style.cssText = '';
-            parameters.width = 'auto';
-            parameters.height = 'auto';
-            parameters.lock = false;
-            parameters.hideclose = false;
-            parameters.draggable = false;
         };
 
         // Center the modal in the viewport
-        method.center = function(settings) {
+        method.center = function(parameters) {
             var documentHeight =  Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
 
                 modalWidth = Math.max(modalContainer.clientWidth, modalContainer.offsetWidth),
@@ -147,7 +149,7 @@ var Modal = (function() {
 
                 scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
-            if (!settings.horizontalOnly) {
+            if (!parameters.horizontalOnly) {
                 modalContainer.style.top = top + scrollTop + 'px';
             }
 
