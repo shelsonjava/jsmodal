@@ -19,6 +19,10 @@ body {
 	overflow: hidden;
 	text-align: center;
 }
+#jsmodal-logo {
+	float: right;
+	margin: 10px;
+}
 #wrapper {
 	background: #fff;
 	-moz-border-radius: 11px;
@@ -62,6 +66,7 @@ a {
 
 <div id="wrapper">
 	<div id="header">
+		<img alt="jsModal" height="89" src="images/jsmodal.png" width="100" id="jsmodal-logo" />
 		<h1>jsModal!</h1>
 		<p>A modal box engine written in pure JavaScript</p>
 	</div>
@@ -82,7 +87,15 @@ a {
 		<pre class="prettyprint lang-html linenums">
 &lt;script&gt;
 document.getElementById('modal-1').onclick = function() {
-  Modal.open({ content: '&lt;h1&gt;Default modal!&lt;/h1&gt;' });
+  Modal.open({
+               content: '&lt;strong&gt;Default modal!&lt;/strong&gt;
+                         &lt;br /&gt;Testing the modal.
+                         &lt;br /&gt;&lt;
+                         br /&gt;Loreum ipsum dolorem the quick brown 
+                         fox jumped over the lazy dog.
+                         &lt;br /&gt;&lt;br /&gt;Yes its true.',
+               draggable: true
+            });
 }
 &lt;/script&gt;
 </pre>
@@ -101,9 +114,9 @@ document.getElementById('modal-2').onclick = function() {
 }
 &lt;/script&gt;
 </pre>
-		<input id="modal-2" type="button" value="Example 2" />
-		<br /><br />
-		<a href="http://code.google.com/p/jsmodal/">Google Code Repository: http://code.google.com/p/jsmodal/</a>
+		<input id="modal-2" type="button" value="Example 2" /> <br /><br />Download:<a href="https://drive.google.com/folderview?id=0B76smB_YGoSJd1RaREFMZVJpcE0&usp=sharing"> 
+		jsModal v1.1</a><br /><br />
+		Google Code Repository: <a href="http://code.google.com/p/jsmodal/">http://code.google.com/p/jsmodal/</a>
 </div>
 	<div id="footer">
 		© 2013 Henry Tang Kai</div>
@@ -117,7 +130,6 @@ document.getElementById('modal-1').onclick = function() {
 document.getElementById('modal-2').onclick = function() {
   Modal.open({
     content: '<h1>Hello!</h1><p>(click the overlay to escape)</p>',
-    draggable: true,
     width: '50%',
     height: '50%',
     hideclose: true
