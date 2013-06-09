@@ -1,5 +1,5 @@
 /*!
- * jsModal - A pure JavaScript modal dialog engine v1.0a
+ * jsModal - A pure JavaScript modal dialog engine v1.0b
  * http://jsmodal.com/
  *
  * Author: Henry Rune Tang Kai <henry@henrys.se>
@@ -8,7 +8,7 @@
  *
  * License: http://www.opensource.org/licenses/mit-license.php
  *
- * Date: 2013-6-07
+ * Date: 2013-6-10
  */
 
 var Modal = (function() {
@@ -90,10 +90,11 @@ var Modal = (function() {
             } else {
                 modalHeader.onmousedown = function() {
                     return false;
-                }
+                };
             }
         };
 
+        // Drag the modal
         method.drag = function(e) {
             var xPosition = (window.event !== undefined) ? window.event.clientX : e.clientX,
                 yPosition = (window.event !== undefined) ? window.event.clientY : e.clientY,
@@ -129,37 +130,47 @@ var Modal = (function() {
 
         // Center the modal in the viewport
         method.center = function(parameters) {
-            var documentHeight =  Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+            var documentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
 
                 modalWidth = Math.max(modalContainer.clientWidth, modalContainer.offsetWidth),
                 modalHeight = Math.max(modalContainer.clientHeight, modalContainer.offsetHeight),
 
-                windowWidth = Math.max(
-                    Math.max(document.body.offsetWidth, document.documentElement.offsetWidth),
-                    Math.max(document.body.clientWidth, document.documentElement.clientWidth)
-                ),
+                browserWidth = 0,
+                browserHeight = 0,
 
-                windowHeight = Math.max(
-                    Math.max(document.body.offsetHeight, document.documentElement.offsetHeight),
-                    Math.max(document.body.clientHeight, document.documentElement.clientHeight)
-                ),
+                amountScrolledX = 0,
+                amountScrolledY = 0;
 
-                top = (windowHeight - modalHeight) / 2,
-                left = (windowWidth - modalWidth) / 2,
-
-                scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-
-            if (!parameters.horizontalOnly) {
-                modalContainer.style.top = top + scrollTop + 'px';
+            if (typeof (window.innerWidth) === 'number') {
+                browserWidth = window.innerWidth;
+                browserHeight = window.innerHeight;
+            } else if (document.documentElement && document.documentElement.clientWidth) {
+                browserWidth = document.documentElement.clientWidth;
+                browserHeight = document.documentElement.clientHeight;
             }
 
-            modalContainer.style.left = left + 'px';
+            if (typeof (window.pageYOffset) === 'number') {
+                amountScrolledY = window.pageYOffset;
+                amountScrolledX = window.pageXOffset;
+            } else if (document.body && document.body.scrollLeft) {
+                amountScrolledY = document.body.scrollTop;
+                amountScrolledX = document.body.scrollLeft;
+            } else if (document.documentElement && document.documentElement.scrollLeft) {
+                amountScrolledY = document.documentElement.scrollTop;
+                amountScrolledX = document.documentElement.scrollLeft;
+            }
+
+            if (!parameters.horizontalOnly) {
+                modalContainer.style.top = amountScrolledY + (browserHeight / 2) - (modalHeight / 2) + 'px';
+            }
+
+            modalContainer.style.left = amountScrolledX + (browserWidth / 2) - (modalWidth / 2) + 'px';
 
             modalOverlay.style.height = documentHeight + 'px';
             modalOverlay.style.width = '100%';
         };
 
-        // Set the id's and append them accordingly and to the document body
+        // Set the id's, append the nested elements, and append the complete modal to the document body
         modalOverlay.setAttribute('id', 'modal-overlay');
         modalContainer.setAttribute('id', 'modal-container');
         modalHeader.setAttribute('id', 'modal-header');
